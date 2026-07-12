@@ -3,11 +3,7 @@
 int main()
 {
     
-
-
-    std::cin.clear();
-    std::cin.ignore(-1, '\n');
-    std::cin.get();
+    std::cout << "Hello, world\n";
 
     return 0;
 }
