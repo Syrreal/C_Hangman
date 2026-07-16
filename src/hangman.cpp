@@ -49,10 +49,8 @@ class Hangman {
             // Count lines to set max for rand()
             auto count = std::count_if(std::istreambuf_iterator<char>{file}, {}, [](char c) { return c == '\n'; });
             std::cout << "Line count: " << count << std::endl;
-            // BUG: File iterator is at EOF after counting - need to find a way to reset iterator
-            // May just have to re-open the file
 
-            // std::fseek(std::istreambuf_iterator<char>{file}, 0, SEEK_SET); ## Does not compile with this line, file obj type is wrong
+            file.seekg(0);
 
             // Seed and pick a random number, bind it to the range set by count
             std::random_device rd;
