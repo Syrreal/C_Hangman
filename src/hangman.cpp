@@ -48,7 +48,6 @@ class Hangman {
             assert(file.is_open());
             // Count lines to set max for rand()
             auto count = std::count_if(std::istreambuf_iterator<char>{file}, {}, [](char c) { return c == '\n'; });
-            std::cout << "Line count: " << count << std::endl;
 
             file.seekg(0);
 
@@ -58,13 +57,9 @@ class Hangman {
             std::uniform_int_distribution<> distrib(0, (int)count);
             int r = distrib(gen);
 
-            std::cout << "Picking word on line: " << r << std::endl;
-
             std::string word = "";
             for(; r >= 0; r--) {
-                std::cout << "On line: " << (count - (count - r)) << std::endl;
                 std::getline(file, word);
-                std::cout << "Current word: " << word << std::endl;
             }
             file.close();
             return word;
