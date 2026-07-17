@@ -31,6 +31,8 @@ class Hangman {
                 mWordWithCorrectGuesses.append("z");
             }
         }
+
+        // BUG: Guess letters only works with the letter A???
         // OpenGL keypresses are an enum that correspond to the upper case ASCII code, so we'll pass the keypress as an integer
         // We return an int representing the guess result    0 = Correct, 1 = Incorrect, 2 = Letter already guessed 
         int guessLetter(int letter_ascii) {
@@ -86,9 +88,13 @@ class Hangman {
                     formatted_guess += mWordWithCorrectGuesses[i];
                 }
             }
-            std::cout << "Available letters --- \n" << mAvailable << "\n-------- \n";
-            std::cout << "Correct letters: " << formatted_guess << "\n";
-            std::cout << "Remaining guesses: " << mGuessesLeft << std::endl;
+            std::cout << "Remaining guesses: " << mGuessesLeft << "\n";
+            std::cout << "Available letters --- \n";
+            for(char letter: mAvailable){
+                std::cout << letter;
+            } 
+            std::cout << "\n-------- \n";
+            std::cout << "Correct letters: " << formatted_guess << std::endl;
         };
 
     private:
