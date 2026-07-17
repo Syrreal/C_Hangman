@@ -111,6 +111,10 @@ class Hangman {
                 std::getline(file, word);
             }
             file.close();
+            // convert to uppercase
+            for(auto & c: word){
+                c = toupper(c);
+            }
             return word;
         };
 
