@@ -4,7 +4,11 @@ project(C_Hangman VERSION 0.0.0 LANGUAGES C CXX)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 
-add_executable(C_Hangman src/main.cpp dependencies/GLAD/src/glad.c)
+add_executable(
+    C_Hangman src/main.cpp
+    dependencies/GLAD/src/glad.c
+    src/hangman.hpp
+)
 
 target_include_directories(C_Hangman PRIVATE dependencies)
 

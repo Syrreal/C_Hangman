@@ -1,5 +1,6 @@
+#include "hangman.hpp"
+
 #include <array>
-#include <string>
 #include <vector>
 #include <random>
 #include <algorithm>
@@ -153,28 +154,28 @@ class Hangman {
 
 
 // TODO: remove after testing
-int main() {
-    Hangman game = Hangman{};
-    game.printWord();
-    game.makeGuess(74);
-    game.makeGuess(80);
-    game.makeGuess(85);
-    game.makeGuess(77);
-    game.makeGuess(65);
-    game.makeGuess(66);
-    auto state = game.getGameState();
-    std::cout << "Template word: " << *std::get<0>(state) << '\n';
-    std::cout << "Letters left available: ";
-    char* letters = *std::get<1>(state);
-    for(int i = 0; i < 26; i++){
-        if(letters[i] != 'z'){
-            std::cout << letters[i];
-        }
-    }
-    std::cout << "\n";
-    std::cout << "Guesses left: " << std::get<2>(state) << '\n';
-    game.makeGuess(67);
-    game.makeGuess(74);
-    game.makeGuess(68);
-    game.makeGuess(69);
-}
+// int main() {
+//     Hangman game = Hangman{};
+//     game.printWord();
+//     game.makeGuess(74);
+//     game.makeGuess(80);
+//     game.makeGuess(85);
+//     game.makeGuess(77);
+//     game.makeGuess(65);
+//     game.makeGuess(66);
+//     auto state = game.getGameState();
+//     std::cout << "Template word: " << *std::get<0>(state) << '\n';
+//     std::cout << "Letters left available: ";
+//     char* letters = *std::get<1>(state);
+//     for(int i = 0; i < 26; i++){
+//         if(letters[i] != 'z'){
+//             std::cout << letters[i];
+//         }
+//     }
+//     std::cout << "\n";
+//     std::cout << "Guesses left: " << std::get<2>(state) << '\n';
+//     game.makeGuess(67);
+//     game.makeGuess(74);
+//     game.makeGuess(68);
+//     game.makeGuess(69);
+// }
