@@ -9,10 +9,8 @@
 
 std::string wordFile = "words.txt";
 
-// TODO: Add win/lose conditions and checks
 class Hangman {
     private:
-        char mGuessed[26] = {};
         char mAvailable[26];
         std::string mWordWithCorrectGuesses = "";
         std::string mWord = "";
@@ -31,47 +29,49 @@ class Hangman {
             for(char a: mWord) {
                 mWordWithCorrectGuesses.append("z");
             }
-        }
+        };
+
         // OpenGL keypresses are an enum that correspond to the upper case ASCII code, so we'll pass the keypress as an integer
-        // We return an int representing the guess result    0 = Correct, 1 = Incorrect, 2 = Letter already guessed 
-        int guessLetter(int letter_ascii) {
+        // We return an int representing the guess result    0 = Incorrect, 1 = Correct, 2 = Letter already guessed
+        int makeGuess(int letter_ascii) {
             char letter = static_cast<char>(letter_ascii);
+            if(mGuessesLeft <= 0){
+                std::cout << "Game is ended no more guessing" << std::endl;
+                return 2;
+            }
+            int correctGuess = 2;
             for(int i = 0; i < std::size(mAvailable); i++) {
                 // Check if the letter has already been guessed
                 if(mAvailable[i] == letter) {
-                    mGuessed[i] == letter;
                     // Set the guessed letter to a lowercase z since it's unused by the rest of the game logic
-                    mAvailable[i] = 'z';
-                    // Check if the letter is in the guess word
-                    std::vector<size_t> positions;
-                    size_t pos = mWord.find(letter, 0);
-                    while(pos != std::string::npos)
-                    {
-                        positions.push_back(pos);
-                        pos = mWord.find(letter, pos+1);
-                    }
-                    std::cout << "Positions found: ";
-                    for(size_t pos: positions){
-                        std::cout << pos;
-                    }
-                    std::cout << std::endl;
-                    // If no positions were recorded the guess was wrong and we can subtract a guess
-                    if (positions.size() == 0) {
-                        mGuessesLeft--;
-                        return 1;
-                    }
-                    // Iterate through the guess word template and fill in all the spots marked with the guessed letter
-                    for(int i = 0; i < positions.size(); i++) {
-                        // convert char to string to use replace function
-                        std::string l = {letter};
-                        mWordWithCorrectGuesses.replace(positions[i], 1, l);
-                    }
-                    return 0;
+                    mAvailable[i] == 'z';
+                    correctGuess = checkGuess(letter);
                 }
             }
-            // Letter did not match any letters left available
-            return 2;
+            if(correctGuess == 2){
+                // Letter was already guessed
+                return 2;
+            } else if (correctGuess == 1){
+                // Guess was incorrect, decrement guess counter and see if game is over
+                mGuessesLeft--;
+                if(mGuessesLeft <= 0){
+                    std::cout << "End game" << std::endl; // TODO: Game over/Loss implementation
+                    // No guesses left, end game
+                }
+                std::cout << "Continue" << std::endl;
+                // Guesses remaining, return the the guess was incorrect and continue game
+                return correctGuess;
+            }
+            // Guess was correct, check if all letters are filled and game should be over
+            if(mWord.compare(mWordWithCorrectGuesses) == 0) {
+                std::cout << "You win!" << std::endl; // TODO: Game over/Win implementation
+                mGuessesLeft = 0; // Setting Guesses left to 0 on win for now since there no real game end
+                return 2;
+            }
+            // Guess was correct and game is not over
+            return correctGuess;
         };
+
         void printWord() {
             std::cout << "The word is: " << mWord << std::endl;
         };
@@ -98,6 +98,28 @@ class Hangman {
         };
 
     private:
+        int checkGuess(char letter) {
+            // Check if the letter is in the guess word
+            std::vector<size_t> positions;
+            size_t pos = mWord.find(letter, 0);
+            while(pos != std::string::npos)
+            {
+                positions.push_back(pos);
+                pos = mWord.find(letter, pos+1);
+            }
+            // If no positions were recorded the guess was wrong
+            if (positions.size() == 0) {
+                return 0;
+            }
+            // Iterate through the guess word template and fill in all the spots marked with the guessed letter
+            for(int i = 0; i < positions.size(); i++) {
+                // convert char to string to use replace function
+                std::string l = {letter};
+                mWordWithCorrectGuesses.replace(positions[i], 1, l);
+            }
+            return 1;
+        }
+        
         std::string pickWord() {
             std::ifstream file(wordFile);
             assert(file.is_open());
@@ -123,7 +145,6 @@ class Hangman {
             }
             return word;
         };
-
 };
 
 
@@ -131,11 +152,14 @@ class Hangman {
 int main() {
     Hangman game = Hangman{};
     game.printWord();
-    game.guessLetter(74);
-    game.printGuesses();
-    game.guessLetter(80);
-    game.printGuesses();
-    game.guessLetter(85);
-    game.guessLetter(77);
-    game.printGuesses();
+    game.makeGuess(74);
+    game.makeGuess(80);
+    game.makeGuess(85);
+    game.makeGuess(77);
+    game.makeGuess(65);
+    game.makeGuess(66);
+    game.makeGuess(67);
+    game.makeGuess(74);
+    game.makeGuess(68);
+    game.makeGuess(69);
 }
