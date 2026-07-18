@@ -44,11 +44,12 @@ class Hangman {
                 // Check if the letter has already been guessed
                 if(mAvailable[i] == letter) {
                     // Set the guessed letter to a lowercase z since it's unused by the rest of the game logic
-                    mAvailable[i] == 'z';
+                    mAvailable[i] = 'z';
                     correctGuess = checkGuess(letter);
                 }
             }
             if(correctGuess == 2){
+                std::cout << "Letter already guessed!" << std::endl;
                 // Letter was already guessed
                 return 2;
             } else if (correctGuess == 1){
@@ -96,7 +97,10 @@ class Hangman {
             std::cout << "\n-------- \n";
             std::cout << "Correct letters: " << formatted_guess << std::endl;
         };
-
+        
+        std::tuple<std::string*, char(*)[], int> getGameState() {
+            return  {&mWordWithCorrectGuesses, &mAvailable, mGuessesLeft};
+        }
     private:
         int checkGuess(char letter) {
             // Check if the letter is in the guess word
@@ -119,7 +123,7 @@ class Hangman {
             }
             return 1;
         }
-        
+
         std::string pickWord() {
             std::ifstream file(wordFile);
             assert(file.is_open());
@@ -158,6 +162,17 @@ int main() {
     game.makeGuess(77);
     game.makeGuess(65);
     game.makeGuess(66);
+    auto state = game.getGameState();
+    std::cout << "Template word: " << *std::get<0>(state) << '\n';
+    std::cout << "Letters left available: ";
+    char* letters = *std::get<1>(state);
+    for(int i = 0; i < 26; i++){
+        if(letters[i] != 'z'){
+            std::cout << letters[i];
+        }
+    }
+    std::cout << "\n";
+    std::cout << "Guesses left: " << std::get<2>(state) << '\n';
     game.makeGuess(67);
     game.makeGuess(74);
     game.makeGuess(68);
