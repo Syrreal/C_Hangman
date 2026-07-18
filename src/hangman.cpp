@@ -50,6 +50,11 @@ class Hangman {
                         positions.push_back(pos);
                         pos = mWord.find(letter, pos+1);
                     }
+                    std::cout << "Positions found: ";
+                    for(size_t pos: positions){
+                        std::cout << pos;
+                    }
+                    std::cout << std::endl;
                     // If no positions were recorded the guess was wrong and we can subtract a guess
                     if (positions.size() == 0) {
                         mGuessesLeft--;
@@ -59,7 +64,7 @@ class Hangman {
                     for(int i = 0; i < positions.size(); i++) {
                         // convert char to string to use replace function
                         std::string l = {letter};
-                        mWordWithCorrectGuesses.replace(1, 1, l);
+                        mWordWithCorrectGuesses.replace(positions[i], 1, l);
                     }
                     return 0;
                 }
@@ -126,8 +131,11 @@ class Hangman {
 int main() {
     Hangman game = Hangman{};
     game.printWord();
-    game.guessLetter(65);
+    game.guessLetter(74);
     game.printGuesses();
     game.guessLetter(80);
+    game.printGuesses();
+    game.guessLetter(85);
+    game.guessLetter(77);
     game.printGuesses();
 }
