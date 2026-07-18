@@ -9,6 +9,7 @@
 
 std::string wordFile = "words.txt";
 
+// TODO: Add win/lose conditions and checks
 class Hangman {
     private:
         char mGuessed[26] = {};
@@ -31,8 +32,6 @@ class Hangman {
                 mWordWithCorrectGuesses.append("z");
             }
         }
-
-        // BUG: Guess letters only works with the letter A???
         // OpenGL keypresses are an enum that correspond to the upper case ASCII code, so we'll pass the keypress as an integer
         // We return an int representing the guess result    0 = Correct, 1 = Incorrect, 2 = Letter already guessed 
         int guessLetter(int letter_ascii) {
@@ -62,14 +61,10 @@ class Hangman {
                         std::string l = {letter};
                         mWordWithCorrectGuesses.replace(1, 1, l);
                     }
-                    break;
                     return 0;
                 }
-                else {
-                    return 2;
-                }
             }
-            assert(true && "How'd you get here");
+            // Letter did not match any letters left available
             return 2;
         };
         void printWord() {
@@ -131,7 +126,8 @@ class Hangman {
 int main() {
     Hangman game = Hangman{};
     game.printWord();
-    game.printGuesses();
     game.guessLetter(65);
+    game.printGuesses();
+    game.guessLetter(80);
     game.printGuesses();
 }
